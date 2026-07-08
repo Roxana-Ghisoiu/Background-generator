@@ -1,35 +1,42 @@
-var css = document.querySelector("h3");
-var color1 = document.querySelector(".color1");
-var color2 = document.querySelector(".color2");
-var body = document.getElementById("gradient");
+const css = document.querySelector("h3");
+const [color1, color2, color3] = document.querySelectorAll(".color");
+const body = document.querySelector("#gradient");
+const colorInput = document.querySelector("#colorInput");
 
-function setGradient(){
-    body.style.background = "linear-gradient(to right, " 
-    + color1.value
-    +","
-    +color2.value
-    + ")";
+const createLinearGradient = () => {
+  return `linear-gradient(to right, ${color1.value}, ${color2.value}, ${color3.value})`;
+};
 
-    css.textContent = body.style.background + ";";
-}
+const setGradient = () => {
+  const gradient = createLinearGradient();
 
+  body.style.background = gradient;
+  css.textContent = `${gradient};`;
+  colorInput.value = gradient;
+};
 
-function generateRandomColor() {
-    //Generate random RGB values
-    const r = Math.floor(Math.random()*256);
-    const g = Math.floor(Math.random()*256);
-    const b = Math.floor(Math.random()*256);
+const generateRandomHexColor = () => {
+  const characters = "0123456789ABCDEF";
+  let color = "#";
 
-    //Convert to hexadecimal format
-    const hexColor = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    color += characters[randomIndex];
+  }
 
-    // Set the input field value
-    document.getElementById("colorInput").value = hexColor;
+  return color;
+};
 
-}
+const generateRandomColor = () => {
+  color1.value = generateRandomHexColor();
+  color2.value = generateRandomHexColor();
+  color3.value = generateRandomHexColor();
+
+  setGradient();
+};
 
 color1.addEventListener("input", setGradient);
 color2.addEventListener("input", setGradient);
+color3.addEventListener("input", setGradient);
 
-
-
+setGradient();
